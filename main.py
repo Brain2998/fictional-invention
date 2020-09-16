@@ -24,7 +24,12 @@ if __name__ == "__main__":
     except KeyError:
         print('Please define environment variable DatabaseLogin and DatabasePassword')
         sys.exit(1)
-    db=pymysql.connect(dbAddr, int(dbPort), dbLogin, dbPassword, 'fictionalinvention')
+    db=pymysql.connect(host=dbAddr, port=int(dbPort), user=dbLogin, password=dbPassword, db='fictionalinvention')
+    cursor=db.cursor()
+    app.config["cursor"]=cursor
+    #secret key for JWT signing
+    secretKey=os.urandom(64).hex()
+    app.config["secretKey"]=secretKey
 
     app.register_blueprint(static)
     app.register_blueprint(session)
