@@ -1,4 +1,6 @@
 import flask
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import configparser
 from static import static
 from session import session
@@ -33,6 +35,8 @@ if __name__ == "__main__":
     secretKey=os.urandom(64).hex()
     app.config["secretKey"]=secretKey
 
+    limiter = Limiter(app, key_func=get_remote_address, default_limits=["100 per minute"])
+    limiter.limit("3 per minute")(session)
     app.register_blueprint(static)
     app.register_blueprint(session)
     app.register_blueprint(dbquery)
