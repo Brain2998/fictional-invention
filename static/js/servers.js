@@ -1,69 +1,70 @@
 $(document).ready(function() {
-    var booksList=$('#books_list tbody');
-    getBooksList();
-    $('#addBook').submit(function(e){
-        booksList.empty()
+    var serversList=$('#servers_list tbody');
+    getServersList();
+    $('#addServer').submit(function(e){
+        serversList.empty()
         e.preventDefault()
         var form=$(this)
         $.ajax({
             async: true,
             type: "POST",
-            url: "/addNewBook",
+            url: "/addNewServer",
             data: form.serialize(),
             cache: false,
             processData: false,
             success: function(data){
-                getBooksList()
+                getServersList()
             },
             error: function(err){
                 showResult(`ajax err: ${JSON.stringify(err,null,2)}`);    
             }
         })
     });
-    $(this).on('click', 'button[name="deleteBook"]', function(e){
-        booksList.empty()
+    $(this).on('click', 'button[name="deleteServer"]', function(e){
+        serversList.empty()
         e.preventDefault()
         var row=$(this).parent().parent();
         $.ajax({
             async: true,
             type: "POST",
-            url: "/deleteBook",
+            url: "/deleteServer",
             data: "id="+row.find("[name='id']").html(),
             cache: false,
             processData: false,
             success: function(data){
-                getBooksList()
+                getServersList()
             },
             error: function(err){
                 showResult(`ajax err: ${JSON.stringify(err,null,2)}`);    
             }
         })
     });
-    $(this).on('click', 'button[name="editBook"]', function(e){
-        booksList.empty()
+    $(this).on('click', 'button[name="editServer"]', function(e){
+        serversList.empty()
         e.preventDefault()
         var row=$(this).parent().parent();
+        console.log()
         $.ajax({
             async: true,
             type: "POST",
-            url: "/editBook",
-            data: "id="+row.find("[name='id']").html()+"&name="+row.find("[name='name']").val()+"&author="+row.find("[name='author']").val()+"&genre="+row.find("[name='genre']").val(),
+            url: "/editServer",
+            data: "id="+row.find("[name='id']").html()+"&name="+row.find("[name='name']").val()+"&processor="+row.find("[name='processor']").val()+"&ram="+row.find("[name='ram']").val()+"&system="+row.find("[name='system']").val(),
             cache: false,
             processData: false,
             success: function(data){
-                getBooksList()
+                getServersList()
             },
             error: function(err){
                 showResult(`ajax err: ${JSON.stringify(err,null,2)}`);    
             }
         })
     });
-    function getBooksList(){
-        booksList.empty();
+    function getServersList(){
+        serversList.empty();
         $.ajax({
             async: true,
             type: "GET",
-            url: "/getBooksList",
+            url: "/getServersList",
             success: function(data){
                 var result = JSON.parse(data);
                 var htmlResult='';
@@ -71,15 +72,16 @@ $(document).ready(function() {
                     htmlResult+='<tr>';
                     htmlResult+='<td name="id">'+result[i].id+'</td>';
                     htmlResult+='<td><input type="text" class="form-control" name="name" placeholder="Name" value="'+result[i].name+'"></td>';
-                    htmlResult+='<td><input type="text" class="form-control" name="author" placeholder="Author" value="'+result[i].author+'"></td>';
-                    htmlResult+='<td><input type="text" class="form-control" name="genre" placeholder="Genre" value="'+result[i].genre+'"></td>';
-                    htmlResult+='<td><button name="editBook"  class="btn btn-primary">Edit</button></td>';
-                    htmlResult+='<td><button name="deleteBook" class="btn btn-primary">Delete</button></td>';
+                    htmlResult+='<td><input type="text" class="form-control" name="processor" placeholder="Processor" value="'+result[i].processor+'"></td>';
+                    htmlResult+='<td><input type="text" class="form-control" name="ram" placeholder="RAM" value="'+result[i].ram+'"></td>';
+                    htmlResult+='<td><input type="text" class="form-control" name="system" placeholder="System" value="'+result[i].system+'"></td>';
+                    htmlResult+='<td><button name="editServer"  class="btn btn-primary">Edit</button></td>';
+                    htmlResult+='<td><button name="deleteServer" class="btn btn-primary">Delete</button></td>';
                     htmlResult+='</tr>';
                 }
-                $("#books_list").DataTable().clear().destroy();
+                $("#servers_list").DataTable().clear().destroy();
                 showResult(htmlResult);
-                $("#books_list").dataTable({"bDestroy": true});
+                $("#servers_list").dataTable({"bDestroy": true});
             },
             error: function(err){
                 showResult(`ajax err: ${JSON.stringify(err,null,2)}`);    
@@ -87,6 +89,6 @@ $(document).ready(function() {
         });
     }
     function showResult(data){
-        booksList.html(data);
+        serversList.html(data);
     }
 });
