@@ -2,6 +2,7 @@ import flask
 import configparser
 from static import static
 from session import session
+from dbquery import dbquery
 import pymysql
 import os
 import sys
@@ -15,7 +16,7 @@ if __name__ == "__main__":
     appPort=parser.get('Common', 'APP_PORT')
     dbAddr=parser.get('DB', 'DB_ADDRESS')
     dbPort=parser.get('DB', 'DB_PORT')
-
+    #connection to db
     dbLogin=''
     dbPassword=''
     try:
@@ -26,6 +27,7 @@ if __name__ == "__main__":
         sys.exit(1)
     db=pymysql.connect(host=dbAddr, port=int(dbPort), user=dbLogin, password=dbPassword, db='fictionalinvention')
     cursor=db.cursor()
+    app.config['db']=db
     app.config["cursor"]=cursor
     #secret key for JWT signing
     secretKey=os.urandom(64).hex()
@@ -33,4 +35,5 @@ if __name__ == "__main__":
 
     app.register_blueprint(static)
     app.register_blueprint(session)
+    app.register_blueprint(dbquery)
     app.run(host=appHost, port=int(appPort))
