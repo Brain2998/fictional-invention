@@ -40,13 +40,17 @@
             .tooltip.top > .tooltip-arrow {
                 border-top: 5px solid #2b669a;
             }
+            button{
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
-        <button onclick="location.href='/logout'" class="btn btn-primary" type="button">Logout</button>
+        
         <div id="header"></div>
         <div id="content" style="width:90%; margin: 0 auto;">
             <div class="container">
+                <button onclick="location.href='/logout'" class="btn btn-primary" type="button">Logout</button>
                 <div>Add new server</div>
                 <form method="POST" id="addServer" action="/addNewServer">
                     <div class="form-group">
