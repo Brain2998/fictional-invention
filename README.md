@@ -2,6 +2,10 @@
 
 ## Installation
 
+### Initialize database
+
+Initialize database from createDatabase.sql script
+
 ### Setup database connection
 
 Database credentials are stored in environment variables. In order to establsih a database connection you need to create following environment variables:
@@ -27,8 +31,12 @@ export DatabasePassword=password
 pip3 install -r requirements.txt
 ```
 
-## Running
+## Running server
 
 ```bash
 python3 main.py
 ```
+## Preinstalled users
+
+admin/P@ssw0rd
+user/qwerty
